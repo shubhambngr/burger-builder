@@ -1,0 +1,38 @@
+/* Portrait Mobile View (width below 400px) */
+.burger {
+  width: 60%;
+  height: 250px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+  overflow: auto;
+  padding: 0 5%;
+  transition: all 0.3s ease-out;
+}
+
+/* Portrait Mobile View (width over 400px */
+@media (min-width: 400px) and (min-height: 400px) {
+  .burger {
+    width: 300px;
+    height: 350px;
+    padding: 0 25px;
+  }
+}
+
+/* Landscape Mobile View */
+@media (min-width: 500px) and (max-height: 401px) {
+  .burger {
+    width: 300px;
+    height: 300px;
+    padding: 0 30px;
+  }
+}
+
+/* Desktop View */
+@media (min-width: 1000px) and (min-height: 700px) {
+  .burger {
+    width: 500px;
+    height: 550px;
+    padding: 0 50px;
+  }
+}

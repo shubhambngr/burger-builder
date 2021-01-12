@@ -1,0 +1,7 @@
+.content {
+  margin-top: 75px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  overflow-x: hidden;
+}
