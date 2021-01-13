@@ -3,9 +3,12 @@ import { Component } from "react";
 import Backdrop from "../Backdrop/Backdrop";
 
 class Modal extends Component {
-  // * Only updates Modal, and thus OrderSummary only when Modal is shown.
+  // * Only updates Modal, and thus OrderSummary, when Modal is shown and 2nd line checks for spinner updates.
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.show !== this.props.show;
+    return (
+      nextProps.show !== this.props.show ||
+      nextProps.children !== this.props.children
+    );
   }
 
   render() {
