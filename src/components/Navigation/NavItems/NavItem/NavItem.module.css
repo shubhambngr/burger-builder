@@ -16,6 +16,8 @@
 .NavItem a:hover,
 .NavItem a:active,
 .NavItem a.active {
+  transition: font-size 0.25s ease;
+  font-size: 1.25rem;
   color: #40a4c8;
 }
 
@@ -38,6 +40,7 @@
   .NavItem a:hover,
   .NavItem a:active,
   .NavItem a.active {
+    font-size: initial;
     background-color: #8f5c2c;
     border-bottom: 4px solid #40a4c8;
     color: white;

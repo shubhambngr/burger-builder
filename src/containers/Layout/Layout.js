@@ -6,7 +6,7 @@ import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
 class Layout extends Component {
   state = { sideDrawerOpen: false };
 
-  backdropToggleHandler = () => {
+  backdropClickHandler = () => {
     this.setState((prevState) => ({
       sideDrawerOpen: !prevState.sideDrawerOpen,
     }));
@@ -15,10 +15,10 @@ class Layout extends Component {
   render() {
     return (
       <>
-        <Toolbar openSideDrawer={this.backdropToggleHandler} />
+        <Toolbar openSideDrawer={this.backdropClickHandler} />
         <SideDrawer
           open={this.state.sideDrawerOpen}
-          backdropClicked={this.backdropToggleHandler}
+          closeSidebar={this.backdropClickHandler}
         />
         <main className={styles.content}>{this.props.children}</main>
       </>

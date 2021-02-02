@@ -1,13 +1,15 @@
 import styles from "./NavItems.module.css";
 import NavItem from "./NavItem/NavItem";
 
-function NavItems() {
+function NavItems(props) {
   return (
     <ul className={styles.NavItems}>
-      <NavItem link="/" active>
+      <NavItem clicked={props.clicked} link="/">
         Burger Builder
       </NavItem>
-      <NavItem link="/">Checkout</NavItem>
+      <NavItem clicked={props.clicked} link="/orders">
+        Orders
+      </NavItem>
     </ul>
   );
 }

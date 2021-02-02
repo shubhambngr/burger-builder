@@ -1,0 +1,24 @@
+.CheckoutSummary {
+  text-align: center;
+  width: 80%;
+  margin: auto;
+}
+
+.BurgerWrapper > div {
+  width: auto;
+  height: 20rem;
+  padding: 0 20%;
+}
+
+@media (min-width: 600px) {
+  .CheckoutSummary {
+    width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .BurgerWrapper > div {
+    margin: 0 -2rem;
+    height: 17.5rem;
+  }
+}

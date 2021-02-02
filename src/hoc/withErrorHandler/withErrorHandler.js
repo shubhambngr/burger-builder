@@ -40,7 +40,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
               <em>{this.state.error && this.state.error.message}</em>
             </p>
           </Modal>
-          <WrappedComponent />
+          <WrappedComponent {...this.props} />
         </>
       );
     }

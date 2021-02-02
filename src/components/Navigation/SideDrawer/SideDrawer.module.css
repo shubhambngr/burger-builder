@@ -9,7 +9,7 @@
   background-color: white;
   padding: 2rem 1rem;
   box-sizing: border-box;
-  transition: transform 0.3s ease-out;
+  transition: transform 0.25s ease-out;
 }
 
 @media (min-width: 500px) {
