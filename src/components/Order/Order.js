@@ -18,6 +18,7 @@ const Order = (props) => {
   return (
     <div className={styles.Order}>
       <p>Ingredients: {ingOutput}</p>
+      <p style={{ textTransform: "capitalize" }}>Delivery: {props.delivery}</p>
       <p>
         Price: <strong>USD {Number(props.price).toFixed(2)}</strong>
       </p>

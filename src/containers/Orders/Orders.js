@@ -31,19 +31,31 @@ class Orders extends Component {
   }
 
   render() {
-    let orders = this.state.orders.map((order) => (
-      <Order
-        key={order.id}
-        ingredients={order.ingredients}
-        price={order.price}
-      />
-    ));
+    let orders;
+    if (this.state.orders.length === 0) {
+      orders = <h3 style={{ textAlign: "center" }}>No Orders placed yet.</h3>;
+    } else {
+      orders = this.state.orders.map((order) => (
+        <Order
+          key={order.id}
+          ingredients={order.ingredients}
+          price={order.price}
+          delivery={order.orderData.delivery}
+        />
+      ));
+    }
 
     if (this.state.loading) {
       orders = <Spinner />;
     }
 
-    return <div style={{ width: "100%" }}>{orders}</div>;
+    return (
+      <div
+        style={{ width: "100%", padding: "0 10px", boxSizing: "border-box" }}
+      >
+        {orders}
+      </div>
+    );
   }
 }
 
