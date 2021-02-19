@@ -1,7 +1,8 @@
 .content {
-  margin-top: 75px;
+  padding-top: 75px;
   display: flex;
   flex-flow: column;
+  height: 100%;
   align-items: center;
   overflow-x: hidden;
 }

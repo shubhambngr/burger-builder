@@ -1,62 +1,27 @@
 import { Component } from "react";
+import { connect } from "react-redux";
+
 import styles from "./ContactData.module.css";
 import axios from "../../../axios-orders";
+import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
+import formElConfig from "./formElConfig";
+import * as actions from "../../../store/actions/index";
 
 class ContactData extends Component {
-  formElConfig = (el, elementType, elPlaceholder, minLen, maxLen) => {
-    let config = null;
-    if (el === "input") {
-      config = {
-        elType: el,
-        elConfig: {
-          type: elementType,
-          placeholder: elPlaceholder,
-        },
-        value: "",
-        validation: {
-          required: true,
-          minLength: minLen,
-          maxLength: maxLen,
-        },
-        valid: false,
-        touched: false,
-      };
-    } else if (el === "select") {
-      config = {
-        elType: el,
-        elConfig: {
-          options: [
-            { value: "fastest", displayValue: "Fastest" },
-            { value: "cheapest", displayValue: "Cheapest" },
-          ],
-        },
-        value: "fastest",
-        validation: {},
-        valid: true,
-      };
-    }
-    return config;
-  };
-
   state = {
     orderForm: {
-      name: this.formElConfig("input", "text", "Name"),
-      email: this.formElConfig("input", "email", "Email"),
-      street: this.formElConfig("input", "text", "Street"),
-      zip: this.formElConfig("input", "text", "Zip Code", 6, 6),
-      country: this.formElConfig("input", "text", "Country"),
-      delivery: this.formElConfig("select"),
+      name: formElConfig("input", "text", "Name"),
+      email: formElConfig("input", "email", "Email"),
+      street: formElConfig("input", "text", "Street"),
+      zip: formElConfig("input", "text", "Zip Code", 4, 6),
+      country: formElConfig("input", "text", "Country"),
+      delivery: formElConfig("select"),
     },
     formIsValid: false,
-    loading: false,
   };
-
-  // componentDidMount() {
-  //   console.log(this.state.orderForm);
-  // }
 
   checkValidity = (value, rules) => {
     let isValid = true;
@@ -84,20 +49,11 @@ class ContactData extends Component {
       formData[key] = this.state.orderForm[key].value;
     }
     const orderData = {
-      ingredients: { ...this.props.ingredients },
+      ingredients: { ...this.props.ings },
       price: Number(this.props.price).toFixed(2),
       orderData: formData,
     };
-    axios
-      .post("/orders.json", orderData)
-      .then((response) => {
-        this.setState({ loading: false });
-        this.props.history.replace("/");
-      })
-      .catch((err) => {
-        this.setState({ loading: false });
-        this.props.history.replace("/");
-      });
+    this.props.onBurgerPurchase(orderData);
   };
 
   handleInputChange = (event, element) => {
@@ -149,7 +105,7 @@ class ContactData extends Component {
       </form>
     );
 
-    if (this.state.loading === true) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
 
@@ -162,4 +118,21 @@ class ContactData extends Component {
   }
 }
 
-export default ContactData;
+const mapStateToProps = (state) => {
+  return {
+    ings: state.burger.ingredients,
+    price: state.burger.totalPrice,
+    loading: state.order.loading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onBurgerPurchase: (data) => dispatch(actions.purchaseBurger(data)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(ContactData, axios));
