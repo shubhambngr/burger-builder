@@ -17,7 +17,7 @@ describe("auth Reducer", () => {
     expect(reducer(initState, {})).toEqual(initState);
   });
 
-  it("should store token and id for login action", () => {
+  it("should store token and id for successful login", () => {
     expect(
       reducer(initState, {
         type: actions.AUTH_SUCCESS,
