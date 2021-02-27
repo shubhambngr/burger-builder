@@ -8,12 +8,17 @@ import "./index.css";
 import App from "./App";
 import burgerBuilderReducer from "./store/reducers/burgerBuilder";
 import ordersReducer from "./store/reducers/order";
+import authReducer from "./store/reducers/auth";
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers =
+  process.env.NODE_ENV === "development"
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : null || compose;
 
 const rootReducer = combineReducers({
   burger: burgerBuilderReducer,
   order: ordersReducer,
+  auth: authReducer,
 });
 
 const store = createStore(

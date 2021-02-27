@@ -7,9 +7,20 @@ function NavItems(props) {
       <NavItem clicked={props.clicked} link="/">
         Burger Builder
       </NavItem>
-      <NavItem clicked={props.clicked} link="/orders">
-        Orders
-      </NavItem>
+      {props.isAuth && (
+        <NavItem clicked={props.clicked} link="/orders">
+          Orders
+        </NavItem>
+      )}
+      {!props.isAuth ? (
+        <NavItem clicked={props.clicked} link="/auth">
+          Authenticate
+        </NavItem>
+      ) : (
+        <NavItem clicked={props.clicked} link="/logout">
+          Logout
+        </NavItem>
+      )}
     </ul>
   );
 }

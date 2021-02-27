@@ -10,14 +10,13 @@ function SideDrawer(props) {
       <div
         className={styles.SideDrawer}
         style={{
-          // this can also be done by adding Open and Close classes in css file.
           transform: props.open ? "translateX(0)" : "translateX(-100%)",
         }}
       >
         <div className={styles.Logo}>
           <Logo />
         </div>
-        <NavItems clicked={props.closeSidebar} />
+        <NavItems isAuth={props.isAuth} clicked={props.closeSidebar} />
       </div>
     </>
   );

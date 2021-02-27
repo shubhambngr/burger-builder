@@ -7,37 +7,24 @@ import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
-import formElConfig from "./formElConfig";
 import * as actions from "../../../store/actions/index";
+import {
+  updateObject,
+  checkValidity,
+  formElConfig,
+} from "../../../shared/utility";
 
 class ContactData extends Component {
   state = {
     orderForm: {
       name: formElConfig("input", "text", "Name"),
-      email: formElConfig("input", "email", "Email"),
+      email: formElConfig("input", "email", "Email", null, null, true),
       street: formElConfig("input", "text", "Street"),
       zip: formElConfig("input", "text", "Zip Code", 4, 6),
       country: formElConfig("input", "text", "Country"),
       delivery: formElConfig("select"),
     },
     formIsValid: false,
-  };
-
-  checkValidity = (value, rules) => {
-    let isValid = true;
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    return isValid;
   };
 
   orderHandler = (e) => {
@@ -52,20 +39,23 @@ class ContactData extends Component {
       ingredients: { ...this.props.ings },
       price: Number(this.props.price).toFixed(2),
       orderData: formData,
+      userId: this.props.userId,
     };
-    this.props.onBurgerPurchase(orderData);
+    this.props.onBurgerPurchase(orderData, this.props.token);
   };
 
   handleInputChange = (event, element) => {
-    const newOrderForm = { ...this.state.orderForm };
-    const newElement = { ...newOrderForm[element] };
-    newElement.value = event.target.value;
-    newElement.valid = this.checkValidity(
-      newElement.value,
-      newElement.validation
-    );
-    newElement.touched = true;
-    newOrderForm[element] = newElement;
+    const newElement = updateObject(this.state.orderForm[element], {
+      value: event.target.value,
+      valid: checkValidity(
+        event.target.value,
+        this.state.orderForm[element].validation
+      ),
+      touched: true,
+    });
+    const newOrderForm = updateObject(this.state.orderForm, {
+      [element]: newElement,
+    });
 
     let formValdity = true;
     for (let key in newOrderForm) {
@@ -123,12 +113,15 @@ const mapStateToProps = (state) => {
     ings: state.burger.ingredients,
     price: state.burger.totalPrice,
     loading: state.order.loading,
+    token: state.auth.token,
+    userId: state.auth.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onBurgerPurchase: (data) => dispatch(actions.purchaseBurger(data)),
+    onBurgerPurchase: (data, token) =>
+      dispatch(actions.purchaseBurger(data, token)),
   };
 };
 

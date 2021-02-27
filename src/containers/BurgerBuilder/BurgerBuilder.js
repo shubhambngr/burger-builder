@@ -10,7 +10,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../store/actions/index";
 
-class BurgerBuilder extends PureComponent {
+export class BurgerBuilder extends PureComponent {
   state = {
     purchasing: false,
   };
@@ -21,13 +21,17 @@ class BurgerBuilder extends PureComponent {
   }
 
   orderDisabledHandler(ings) {
-    let totalIngs = 0;
-    Object.keys(ings).map((igKey) => (totalIngs += ings[igKey]));
-    return totalIngs > 0;
+    if (ings) {
+      let totalIngs = 0;
+      Object.keys(ings).map((igKey) => (totalIngs += ings[igKey]));
+      return totalIngs > 0;
+    }
   }
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    this.props.isAuth
+      ? this.setState({ purchasing: true })
+      : this.props.history.push("/auth");
   };
 
   purchaseCancelHandler = () => {
@@ -42,7 +46,7 @@ class BurgerBuilder extends PureComponent {
   render() {
     const disabledInfo = { ...this.props.ings };
     for (let key in disabledInfo) {
-      disabledInfo[key] = disabledInfo[key] <= 0; // disabledInfo = {"salad": true, "meat": false, ...}
+      disabledInfo[key] = disabledInfo[key] <= 0;
     }
 
     const orderSummary = this.props.ings ? (
@@ -63,6 +67,7 @@ class BurgerBuilder extends PureComponent {
       <>
         <Burger ingredients={this.props.ings} />
         <BuildControls
+          isAuth={this.props.isAuth}
           addClicked={this.props.onIngAdd}
           removeClicked={this.props.onIngRemove}
           disabled={disabledInfo}
@@ -94,6 +99,7 @@ const mapStateToProps = (state) => {
     ings: state.burger.ingredients,
     price: state.burger.totalPrice,
     error: state.burger.error,
+    isAuth: state.auth.token !== null,
   };
 };
 
